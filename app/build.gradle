@@ -4,7 +4,7 @@ plugins {
 
 repositories {
   flatDir {
-    dirs 'lib'
+    dirs '/usr/share/processing/core/library'
   }
 }
 
