@@ -1,0 +1,23 @@
+plugins {
+  id 'application'
+}
+
+repositories {
+  flatDir {
+    dirs 'lib'
+  }
+}
+
+dependencies {
+  implementation 'processing:core'
+}
+
+application {
+  mainClass = 'engine.App'
+}
+
+jar {
+  manifest {
+    attributes 'Main-Class': 'engine.App'
+  }
+}
