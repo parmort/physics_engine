@@ -5,9 +5,9 @@ import processing.core.PVector;
 
 public class App extends PApplet {
   public float g = 9.8f;
-  public float fps = 120f;
+  public float fps = 120;
 
-  private Square square;
+  public Square square;
   public Ground gnd;
 
   private int LEFT_ARROW = 37;
@@ -15,7 +15,7 @@ public class App extends PApplet {
 
   private boolean pressed_left = false;
   private boolean pressed_right = false;
-  private float appliedForce = 8f;
+  private float appliedForce = 8;
 
   public void settings() {
     size(1000, 500);

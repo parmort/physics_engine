@@ -13,6 +13,13 @@ public class Ground {
     this.mu_k = mu_k;
   }
 
+  public Ground(App app, float heightAboveBottom) {
+    this.app = app;
+    this.height = this.app.height - heightAboveBottom;
+    this.mu_s = 0;
+    this.mu_k = 0;
+  }
+
   public float height() {
     return this.height;
   }
