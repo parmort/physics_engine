@@ -1,19 +1,23 @@
 package engine;
 
 import processing.core.PVector;
+import processing.core.PConstants;
 import java.lang.Math;
 
 public class Square {
   private App app;
   private int s;
   private float m;
+  private float c_d = 0.25f;
 
   private PVector p;
   private PVector v;
   private PVector a;
+
   private PVector f_net;
   private PVector normalForce;
   private PVector friction;
+  private PVector drag;
 
   public Square(App app, float x, float y, int s) {
     this.app = app;
@@ -27,16 +31,20 @@ public class Square {
     this.f_net = new PVector(0, 0);
     this.normalForce = new PVector(0, 0);
     this.friction = new PVector(0, 0);
+    this.drag = new PVector(0, 0);
 
     applyForce(new PVector(0, this.m * this.app.g));
   }
 
   public void update() {
-    this.calculateNormalForce();
-    this.applyForce(this.normalForce);
+    calculateDragForce();
+    applyForce(this.drag);
 
-    this.calculateFriction();
-    this.applyForce(this.friction);
+    calculateNormalForce();
+    applyForce(this.normalForce);
+
+    calculateFriction();
+    applyForce(this.friction);
 
     this.a.set(PVector.div(this.f_net, this.m));
 
@@ -46,8 +54,9 @@ public class Square {
     PVector delta_p = PVector.div(this.v, this.app.fps);
     this.p.add(v);
 
-    this.removeForce(this.friction);
-    this.removeForce(this.normalForce);
+    removeForce(this.friction);
+    removeForce(this.normalForce);
+    removeForce(this.drag);
   }
 
   public void render() {
@@ -76,6 +85,12 @@ public class Square {
 
   public float right() {
     return this.p.x + this.s;
+  }
+
+  private void calculateDragForce() {
+    float force = 0.5f * this.c_d * this.app.air_density * this.s * this.app.sq(this.v.mag());
+    PVector.fromAngle(oppose(this.v), this.drag);
+    this.drag.setMag(force);
   }
 
   private void calculateNormalForce() {
@@ -112,12 +127,16 @@ public class Square {
     return this.bottom() >= this.app.gnd.height();
   }
 
-  private int oppose(float value) {
+  private float oppose(float value) {
     if (value > 0)
       return -1;
     else if (value < 0)
       return 1;
     else
       return 0;
+  }
+
+  private float oppose(PVector value) {
+    return value.heading() + PConstants.PI;
   }
 }

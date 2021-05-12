@@ -5,6 +5,8 @@ import processing.core.PVector;
 
 public class App extends PApplet {
   public float g = 9.8f;
+  public float air_density = 1.225f;
+
   public float fps = 120;
 
   public Square square;
@@ -15,12 +17,12 @@ public class App extends PApplet {
 
   private boolean pressed_left = false;
   private boolean pressed_right = false;
-  private float appliedForce = 8;
+  private float appliedForce = 100;
 
   public void settings() {
     size(1000, 500);
-    this.gnd = new Ground(this, 100, 0.8f, 0.75f);
-    this.square = new Square(this, 10, this.gnd.height() - 100, 50);
+    this.gnd = new Ground(this, 100, 0.5f, 0.4f);
+    this.square = new Square(this, 10, 0, 50);
   }
 
   public void setup() {
