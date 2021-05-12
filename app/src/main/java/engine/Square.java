@@ -1,6 +1,7 @@
 package engine;
 
 import processing.core.PVector;
+import java.lang.Math;
 
 public class Square {
   private App app;
@@ -37,16 +38,15 @@ public class Square {
     this.calculateFriction();
     this.applyForce(this.friction);
 
-    app.println(this.normalForce, this.f_net);
-
     this.a.set(PVector.div(this.f_net, this.m));
 
-    PVector delta_v = PVector.div(this.a, 60);
+    PVector delta_v = PVector.div(this.a, this.app.fps);
     this.v.add(delta_v);
 
-    PVector delta_p = PVector.div(this.v, 60);
+    PVector delta_p = PVector.div(this.v, this.app.fps);
     this.p.add(v);
 
+    this.removeForce(this.friction);
     this.removeForce(this.normalForce);
   }
 
@@ -82,6 +82,7 @@ public class Square {
     if (collidesWithGround()) {
       this.normalForce.set(0, -this.f_net.y);
       this.v.add(new PVector(0, -this.v.y));
+      this.p.set(new PVector(this.p.x, this.app.gnd.height() - this.s));
     } else {
       this.normalForce.set(0, 0);
     }
@@ -89,15 +90,34 @@ public class Square {
 
   private void calculateFriction() {
     if (collidesWithGround()) {
-      if (v.magSq() > 0) {
-        this.friction.set((this.v.x > 0 ? -1 : 1) * this.app.gnd.mu('k') * this.normalForce.mag(), 0);
+      if (Math.abs(this.v.x) >= 0.025) {
+        this.friction.set(oppose(this.v.x) * this.maxFrictionForce('k'), 0);
+      } else if (Math.abs(this.f_net.x) > this.maxFrictionForce('s')) {
+        this.friction.set(oppose(this.f_net.x) * this.maxFrictionForce('k'), 0);
+      } else {
+        // Not moving and static friction is not broken
+        this.friction.set(-this.f_net.x, 0);
+        this.v.x = 0;
       }
     } else {
       this.friction.set(0, 0);
     }
   }
 
+  private float maxFrictionForce(char type) {
+    return this.app.gnd.mu(type) * this.normalForce.mag();
+  }
+
   private boolean collidesWithGround() {
     return this.bottom() >= this.app.gnd.height();
+  }
+
+  private int oppose(float value) {
+    if (value > 0)
+      return -1;
+    else if (value < 0)
+      return 1;
+    else
+      return 0;
   }
 }
