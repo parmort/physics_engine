@@ -7,8 +7,8 @@ import java.lang.Math;
 public class Square {
   private App app;
   private int s;
-  private float m;
-  private float c_d = 0.25f;
+  public float m;
+  private float c_d = 0.2f;
 
   private PVector p;
   private PVector v;
@@ -22,7 +22,7 @@ public class Square {
   public Square(App app, float x, float y, int s) {
     this.app = app;
     this.s = s;
-    this.m = 1f;
+    this.m = s * s / 2500;
 
     this.p = new PVector(x, y);
     this.v = new PVector(0, 0);
@@ -71,6 +71,18 @@ public class Square {
     this.f_net.sub(force);
   }
 
+  public void setV(PVector v) {
+    this.v.set(v);
+  }
+
+  public float momentum() {
+    return this.m * this.v.mag();
+  }
+
+  public float kinetic() {
+    return this.m * this.v.mag() * this.v.mag() / 2;
+  }
+
   public float top() {
     return this.p.y;
   }
@@ -85,6 +97,12 @@ public class Square {
 
   public float right() {
     return this.p.x + this.s;
+  }
+
+  public boolean collidesWith(Square obj) {
+    if (this.right() > obj.left() && this.right() < obj.right()) return true;
+    if (this.left() < obj.right() && this.left() > obj.left()) return true;
+    return false;
   }
 
   private void calculateDragForce() {
