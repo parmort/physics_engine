@@ -18,7 +18,7 @@ public class App extends PApplet {
 
   private boolean pressed_left = false;
   private boolean pressed_right = false;
-  private float appliedForce = 10;
+  private float appliedForce = 30;
 
   public static void main(String[] args) {
     String[] appletArgs = new String[] { "engine.App" };
@@ -38,13 +38,21 @@ public class App extends PApplet {
 
   public void draw(){
     background(64);
+
+    this.square.updateForces();
+    this.square2.updateForces();
+
     checkCollisions();
+
+    this.square.updateKinematics();
+    this.square2.updateKinematics();
+
     drawGround();
     drawSquare();
     drawSquare2();
 
-    this.square.update();
-    this.square2.update();
+    this.square.clearForces();
+    this.square2.clearForces();
   }
 
   public void keyPressed() {
@@ -74,8 +82,6 @@ public class App extends PApplet {
       PVector p = PVector.add(this.square.momentum(), this.square2.momentum());
       float u = this.square.kinetic() + this.square2.kinetic();
 
-      println(p, this.square.momentum(), this.square2.momentum());
-
       float A = (sq(this.square2.m) / (2 * this.square.m)) + (this.square2.m / 2);
       float B = -1 * this.square2.m * p.x / this.square.m;
       float C = (sq(p.x) / (2 * this.square.m)) - u;
@@ -85,6 +91,12 @@ public class App extends PApplet {
 
       this.square.setV(new PVector(v1, 0));
       this.square2.setV(new PVector(v2, 0));
+
+      if (Math.abs(this.square.right() - this.square2.left()) <= Math.abs(this.square.left() - this.square2.right())) {
+        this.square.setX(this.square2.left() - this.square.s);
+      } else {
+        this.square.setX(this.square2.right());
+      }
 
       this.collided = !this.collided;
     }

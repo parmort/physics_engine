@@ -36,7 +36,7 @@ public class Square {
     applyForce(new PVector(0, this.m * this.app.g));
   }
 
-  public void update() {
+  public void updateForces() {
     calculateDragForce();
     applyForce(this.drag);
 
@@ -45,7 +45,9 @@ public class Square {
 
     calculateFriction();
     applyForce(this.friction);
+  }
 
+  public void updateKinematics() {
     this.a.set(PVector.div(this.f_net, this.m));
 
     PVector delta_v = PVector.div(this.a, this.app.fps);
@@ -63,7 +65,9 @@ public class Square {
       this.p.x = 0;
       this.v.mult(-1);
     }
+  }
 
+  public void clearForces() {
     removeForce(this.friction);
     removeForce(this.normalForce);
     removeForce(this.drag);
