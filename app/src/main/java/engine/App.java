@@ -67,22 +67,26 @@ public class App extends PApplet {
     }
   }
 
+  private boolean collided = false;
+
   private void checkCollisions() {
     if (this.square.collidesWith(this.square2)) {
-      float p = this.square.momentum() + this.square2.momentum();
+      PVector p = PVector.add(this.square.momentum(), this.square2.momentum());
       float u = this.square.kinetic() + this.square2.kinetic();
 
+      println(p, this.square.momentum(), this.square2.momentum());
+
       float A = (sq(this.square2.m) / (2 * this.square.m)) + (this.square2.m / 2);
-      float B = -1 * this.square2.m * p / this.square.m;
-      float C = (sq(p) / (2 * this.square.m)) - u;
+      float B = -1 * this.square2.m * p.x / this.square.m;
+      float C = (sq(p.x) / (2 * this.square.m)) - u;
 
       float v2 = ((-1 * B) + sqrt(sq(B) - (4 * A * C))) / (2 * A);
-      float v1 = (p / this.square.m) - (this.square2.m * v2 / this.square.m);
+      float v1 = (p.x / this.square.m) - (this.square2.m * v2 / this.square.m);
 
       this.square.setV(new PVector(v1, 0));
       this.square2.setV(new PVector(v2, 0));
 
-      println(v1, v2);
+      this.collided = !this.collided;
     }
   }
 

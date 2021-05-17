@@ -6,7 +6,7 @@ import java.lang.Math;
 
 public class Square {
   private App app;
-  private int s;
+  public int s;
   public float m;
   private float c_d = 0.2f;
 
@@ -54,6 +54,16 @@ public class Square {
     PVector delta_p = PVector.div(this.v, this.app.fps);
     this.p.add(v);
 
+    if (right() >= this.app.width) {
+      this.p.x = this.app.width - this.s;
+      this.v.mult(-1);
+    }
+
+    if (left() <= 0) {
+      this.p.x = 0;
+      this.v.mult(-1);
+    }
+
     removeForce(this.friction);
     removeForce(this.normalForce);
     removeForce(this.drag);
@@ -75,13 +85,18 @@ public class Square {
     this.v.set(v);
   }
 
-  public float momentum() {
-    return this.m * this.v.mag();
+  public void setX(float x) {
+    this.p.x = x;
+  }
+
+  public PVector momentum() {
+    return PVector.mult(this.v, this.m);
   }
 
   public float kinetic() {
     return this.m * this.v.mag() * this.v.mag() / 2;
   }
+
 
   public float top() {
     return this.p.y;
@@ -97,6 +112,10 @@ public class Square {
 
   public float right() {
     return this.p.x + this.s;
+  }
+
+  public PVector v() {
+    return this.v;
   }
 
   public boolean collidesWith(Square obj) {
