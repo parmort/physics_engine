@@ -129,7 +129,7 @@ public class Square {
   }
 
   private void calculateDragForce() {
-    float force = 0.5f * this.c_d * this.app.air_density * this.s * this.app.sq(this.v.mag());
+    float force = 0.5f * this.c_d * this.app.air_density() * this.s * this.app.sq(this.v.mag());
     PVector.fromAngle(oppose(this.v), this.drag);
     this.drag.setMag(force);
   }

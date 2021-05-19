@@ -5,6 +5,7 @@ public class Ground {
   private float height;
   private float mu_s;
   private float mu_k;
+  private boolean friction = true;
 
   public Ground(App app, float heightAboveBottom, float mu_s, float mu_k) {
     this.app = app;
@@ -20,6 +21,11 @@ public class Ground {
     this.mu_k = 0;
   }
 
+  public boolean toggleFriction() {
+    this.friction = !this.friction;
+    return this.friction;
+  }
+
   public float height() {
     return this.height;
   }
@@ -29,6 +35,8 @@ public class Ground {
   }
 
   public float mu(char type) {
+    if (!this.friction) return 0;
+
     if (type == 's')
       return this.mu_s;
     else

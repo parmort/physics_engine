@@ -5,7 +5,8 @@ import processing.core.PVector;
 
 public class App extends PApplet {
   public float g = 9.8f;
-  public float air_density = 1f;
+  private float air_density = 1f;
+  private boolean drag = true;
 
   public float fps = 120;
 
@@ -15,6 +16,7 @@ public class App extends PApplet {
 
   private int LEFT_ARROW = 37;
   private int RIGHT_ARROW = 39;
+  private int SPACE = 32;
 
   private boolean pressed_left = false;
   private boolean pressed_right = false;
@@ -28,7 +30,7 @@ public class App extends PApplet {
   public void settings() {
     size(1900, 500);
     this.gnd = new Ground(this, 100, 0.5f, 0.4f);
-    this.square = new Square(this, 10, 0, 50);
+    this.square = new Square(this, 10, 0, 100);
     this.square2 = new Square(this, width / 2, 0, 100);
   }
 
@@ -62,6 +64,9 @@ public class App extends PApplet {
     } else if (keyCode == LEFT_ARROW && !this.pressed_left) {
       this.square.applyForce(new PVector(-this.appliedForce, 0));
       this.pressed_left = true;
+    } else if (keyCode == SPACE) {
+      // Toggle resistive forces
+      this.drag = this.gnd.toggleFriction();
     }
   }
 
@@ -73,6 +78,12 @@ public class App extends PApplet {
       this.square.removeForce(new PVector(-this.appliedForce, 0));
       this.pressed_left = false;
     }
+  }
+
+  public float air_density() {
+    if (!this.drag) return 0;
+
+    return this.air_density;
   }
 
   private boolean collided = false;
