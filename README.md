@@ -1,7 +1,7 @@
-# physics_engine
-
 A school project. This is a simulation with a cube. To run it on a unix-based
 operating system, run:
+
+## Installing
 
 ```
 ./gradlew run
@@ -21,5 +21,23 @@ and run the `bin/App` (or `bin/App.bat` on Windows) script.
 
 ## Controlling the simulation
 
-Left and right arrow keys apply forces on the red square. Spacebar toggles
-friction and air resistance.
+The left and right arrow keys apply forces on the red square. The spacebar
+toggles friction and air resistance.
+
+## Physics Principles
+
+1. Elastic collisions conserve momentum and energy
+2. Air resistance eventually cancels out the other forces acting on an object,
+   resulting in terminal velocity
+3. Static friction force is equal and opposite to the sum of the other forces in
+   the plane of the surface
+4. Normal force is equal and opposite to the net force exerted on the ground
+5. With a constant force, acceleration is constant, and velocity continuously
+   increases
+
+## Goals
+
+- [X] Don't worry about heat
+- [X] Make idealistic assumptions
+- [ ] Remove reliance on processing
+- [ ] Rotational stuff

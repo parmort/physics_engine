@@ -28,9 +28,9 @@ public class App extends PApplet {
   }
 
   public void settings() {
-    size(1900, 500);
+    size(1500, 500);
     this.gnd = new Ground(this, 100, 0.5f, 0.4f);
-    this.square = new Square(this, 10, 0, 100);
+    this.square = new Square(this, 10, 0, 50);
     this.square2 = new Square(this, width / 2, 0, 100);
   }
 
