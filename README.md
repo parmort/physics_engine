@@ -1,7 +1,10 @@
-A school project. This is a simulation with a cube. To run it on a unix-based
-operating system, run:
+# A Physics Engine
+
+A school project. This is a simulation with a cube.
 
 ## Installing
+
+To run it on a unix-based operating system, run:
 
 ```
 ./gradlew run
@@ -39,5 +42,8 @@ toggles friction and air resistance.
 
 - [X] Don't worry about heat
 - [X] Make idealistic assumptions
-- [ ] Remove reliance on processing
-- [ ] Rotational stuff
+- [ ] Update to a up-to-date version of Java (for LSP purposes)
+  - [ ] Decouple from Processing
+  - [ ] Move to a different graphics package
+- [ ] Rotational Motion
+- [ ] Simple Harmonic Motion
