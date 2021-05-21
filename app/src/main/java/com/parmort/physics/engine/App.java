@@ -30,8 +30,8 @@ public class App extends PApplet {
   public void settings() {
     size(1500, 500);
     this.gnd = new Ground(this, 100, 0.5f, 0.4f);
-    this.square = new Square(this, 10, 0, 50);
-    this.square2 = new Square(this, width / 2, 0, 100);
+    this.square = new Square(this, new PVector(10, 0), 50);
+    this.square2 = new Square(this, new PVector(width / 2, 0), 100);
   }
 
   public void setup() {
@@ -50,8 +50,8 @@ public class App extends PApplet {
     this.square2.updateKinematics();
 
     drawGround();
-    drawSquare();
-    drawSquare2();
+    this.square.render(255, 0, 0);
+    this.square2.render(0, 255, 0);
 
     this.square.clearForces();
     this.square2.clearForces();
@@ -104,7 +104,7 @@ public class App extends PApplet {
       this.square2.setV(new PVector(v2, 0));
 
       if (Math.abs(this.square.right() - this.square2.left()) <= Math.abs(this.square.left() - this.square2.right())) {
-        this.square.setX(this.square2.left() - this.square.s);
+        this.square.setX(this.square2.left() - this.square.width);
       } else {
         this.square.setX(this.square2.right());
       }
@@ -119,15 +119,15 @@ public class App extends PApplet {
     noFill();
   }
 
-  private void drawSquare() {
-    fill(255, 0, 0);
-    this.square.render();
-    noFill();
-  }
+  // private void drawSquare() {
+  //   fill(255, 0, 0);
+  //   this.square.render();
+  //   noFill();
+  // }
 
-  private void drawSquare2() {
-    fill(0, 255, 0);
-    this.square2.render();
-    noFill();
-  }
+  // private void drawSquare2() {
+  //   fill(0, 255, 0);
+  //   this.square2.render();
+  //   noFill();
+  // }
 }
