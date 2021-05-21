@@ -1,4 +1,4 @@
-package engine;
+package com.parmort.physics.engine;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -23,7 +23,7 @@ public class App extends PApplet {
   private float appliedForce = 30;
 
   public static void main(String[] args) {
-    String[] appletArgs = new String[] { "engine.App" };
+    String[] appletArgs = new String[] { "com.parmort.physics.engine.App" };
     PApplet.main(appletArgs);
   }
 

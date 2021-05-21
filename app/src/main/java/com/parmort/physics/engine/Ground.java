@@ -1,4 +1,4 @@
-package engine;
+package com.parmort.physics.engine;
 
 public class Ground {
   private App app;

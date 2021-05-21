@@ -13,11 +13,5 @@ dependencies {
 }
 
 application {
-  mainClass = 'engine.App'
-}
-
-jar {
-  manifest {
-    attributes 'Main-Class': 'engine.App'
-  }
+  mainClass = 'com.parmort.physics.engine.App'
 }

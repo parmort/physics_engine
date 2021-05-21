@@ -1,4 +1,4 @@
-package engine;
+package com.parmort.physics.engine;
 
 import processing.core.PVector;
 import processing.core.PConstants;
