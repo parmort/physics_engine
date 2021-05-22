@@ -1,6 +1,9 @@
 plugins {
-  id 'application'
+  id 'java'
 }
+
+group = 'com.parmort'
+version = '1.0'
 
 repositories {
   flatDir {
@@ -10,9 +13,4 @@ repositories {
 
 dependencies {
   implementation 'processing:core'
-  implementation project(':engine')
-}
-
-application {
-  mainClass = 'com.parmort.physics.app.App'
 }

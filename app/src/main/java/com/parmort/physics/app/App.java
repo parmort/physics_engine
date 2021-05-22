@@ -1,14 +1,20 @@
-package com.parmort.physics.engine;
+package com.parmort.physics.app;
 
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import com.parmort.physics.engine.Engine;
+import com.parmort.physics.engine.Square;
+import com.parmort.physics.engine.Ground;
+
 public class App extends PApplet {
+  private Engine eng;
+
   public float g = 9.8f;
   private float air_density = 1f;
   private boolean drag = true;
 
-  public float fps = 120;
+  public int fps = 120;
 
   public Square square;
   public Square square2;
@@ -23,15 +29,17 @@ public class App extends PApplet {
   private float appliedForce = 30;
 
   public static void main(String[] args) {
-    String[] appletArgs = new String[] { "com.parmort.physics.engine.App" };
+    String[] appletArgs = new String[] { "com.parmort.physics.app.App" };
     PApplet.main(appletArgs);
   }
 
   public void settings() {
     size(1500, 500);
-    this.gnd = new Ground(this, 100, 0.5f, 0.4f);
-    this.square = new Square(this, new PVector(10, 0), 50);
-    this.square2 = new Square(this, new PVector(width / 2, 0), 100);
+    this.eng = new Engine(this, width, height, g, air_density, fps);
+    this.gnd = new Ground(eng, 100, 0.5f, 0.4f);
+    this.eng.setGnd(this.gnd);
+    this.square = new Square(eng, new PVector(10, 0), 50);
+    this.square2 = new Square(eng, new PVector(width / 2, 0), 100);
   }
 
   public void setup() {
@@ -66,7 +74,7 @@ public class App extends PApplet {
       this.pressed_left = true;
     } else if (keyCode == SPACE) {
       // Toggle resistive forces
-      this.drag = this.gnd.toggleFriction();
+      this.eng.drag = this.gnd.toggleFriction();
     }
   }
 
@@ -118,16 +126,4 @@ public class App extends PApplet {
     this.gnd.render();
     noFill();
   }
-
-  // private void drawSquare() {
-  //   fill(255, 0, 0);
-  //   this.square.render();
-  //   noFill();
-  // }
-
-  // private void drawSquare2() {
-  //   fill(0, 255, 0);
-  //   this.square2.render();
-  //   noFill();
-  // }
 }

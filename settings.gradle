@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'physics_engine'
-include('app')
+include 'app', 'engine'

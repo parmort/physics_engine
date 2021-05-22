@@ -4,7 +4,7 @@ import processing.core.PVector;
 import processing.core.PConstants;
 
 public abstract class EngObject {
-  protected App app;
+  protected Engine eng;
   public float m;
 
   public float width;
@@ -21,8 +21,8 @@ public abstract class EngObject {
   protected PVector friction;
   protected PVector drag;
 
-  EngObject(App app, float density, float drag_coeff, PVector pos, float width, float height) {
-    this.app = app;
+  EngObject(Engine eng, float density, float drag_coeff, PVector pos, float width, float height) {
+    this.eng = eng;
     this.m = density * width * height;
     this.drag_coeff = drag_coeff;
 
@@ -38,11 +38,11 @@ public abstract class EngObject {
     this.friction = new PVector(0, 0);
     this.drag = new PVector(0, 0);
 
-    applyForce(new PVector(0, this.m * this.app.g));
+    applyForce(new PVector(0, this.m * this.eng.getG()));
   }
 
-  EngObject(App app, float density, float drag_coeff, PVector pos, float s) {
-    this(app, density, drag_coeff, pos, s, s);
+  EngObject(Engine eng, float density, float drag_coeff, PVector pos, float s) {
+    this(eng, density, drag_coeff, pos, s, s);
   }
 
   public abstract void render(float red, float green, float blue);
@@ -61,14 +61,14 @@ public abstract class EngObject {
   public void updateKinematics() {
     this.a.set(PVector.div(this.f_net, this.m));
 
-    PVector delta_v = PVector.div(this.a, this.app.fps);
+    PVector delta_v = PVector.div(this.a, this.eng.getFPS());
     this.v.add(delta_v);
 
-    PVector delta_p = PVector.div(this.v, this.app.fps);
+    PVector delta_p = PVector.div(this.v, this.eng.getFPS());
     this.p.add(v);
 
-    if (right() >= this.app.width) {
-      this.p.x = this.app.width - this.width;
+    if (right() >= this.eng.getWidth()) {
+      this.p.x = this.eng.getWidth() - this.width;
       this.v.mult(-1);
     }
 
@@ -115,7 +115,7 @@ public abstract class EngObject {
   }
 
   private void calculateDragForce() {
-    float force = 0.5f * this.drag_coeff * this.app.air_density() * this.height * this.app.sq(this.v.mag());
+    float force = 0.5f * this.drag_coeff * this.eng.getAirDensity() * this.height * Util.sq(this.v.mag());
     PVector.fromAngle(oppose(this.v), this.drag);
     this.drag.setMag(force);
   }
@@ -124,7 +124,7 @@ public abstract class EngObject {
     if (collidesWithGround()) {
       this.normalForce.set(0, -this.f_net.y);
       this.v.add(new PVector(0, -this.v.y));
-      this.p.set(new PVector(this.p.x, this.app.gnd.height() - this.height));
+      this.p.y = this.eng.getGnd().height() - this.height;
     } else {
       this.normalForce.set(0, 0);
     }
@@ -147,11 +147,11 @@ public abstract class EngObject {
   }
 
   private float maxFrictionForce(char type) {
-    return this.app.gnd.mu(type) * this.normalForce.mag();
+    return this.eng.getGnd().mu(type) * this.normalForce.mag();
   }
 
   private boolean collidesWithGround() {
-    return this.bottom() >= this.app.gnd.height();
+    return this.bottom() >= this.eng.getGnd().height();
   }
 
   public float top() {
